@@ -3,7 +3,7 @@ package ToDoListPackage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.UUID;
+
 
 public class TaskOperations {
 
@@ -23,7 +23,7 @@ public class TaskOperations {
 
         //To add ID to tasks
 
-        task.setTaskID(taskList.size()+1);
+        task.setTaskID(taskList.size() + 1);
 
         Scanner taskScanner = new Scanner(System.in);
 
@@ -65,27 +65,49 @@ public class TaskOperations {
 
         System.out.println("Task has been added!");
 
+
     }
 
     //method to view tasks
     public void viewtasks() {
+        System.out.println("---------------------------------------------------------------------------------------------------------------------");
 
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.printf("%7s %17s %21s %25s %12s %30s", "TASK ID", "PROJECT NAME", "DESCRIPTION", "DUE DATE", "CREATED DATE", "TASK COMPLETED");
+        System.out.printf("%7s %17s %21s %25s %12s %30s", "TASK ID", "Project Name", "Description", "Due Date", "Status", "Task Created on");
         System.out.println();
-        System.out.println("-----------------------------------------------------------------------------");
-        for(Task task: taskList){
-            System.out.format("%7s %17s %21s %25s %12s %30s",
-                    task.getTaskID(), task.getProjectName(), task.gettaskDescription(), task.getdueDate(), task.getcreatedAt(),task.gettaskCompleted());
+        System.out.println("---------------------------------------------------------------------------------------------------------------------");
+        for (Task task : taskList) {
+
+            System.out.format(
+                    "%7s %17s %21s %25s %12s %30s",
+                    Integer.toString(task.getTaskID()), task.getProjectName(), task.gettaskDescription(), task.getdueDate().toInstant(),
+                    task.gettaskCompleted()
+                    , task.getcreatedAt().toInstant());
+
             System.out.println();
         }
-        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------");
     }
-
-    }
-
 
     //method to delete task
+    public void deleteTask() {
+
+        viewtasks();
+        System.out.println("Please enter Task Id to delete: ");
+
+        Scanner taskScanner = new Scanner(System.in);
+        int taskId;
+        taskId = taskScanner.nextInt();
+
+        taskList.stream().filter(x -> x.getTaskID() == taskId).findFirst().ifPresent(x -> {
+            taskList.remove(x);
+        });
+
+
+        System.out.println("Task deleted successfully!");
+
+        viewtasks();
+    }
+
     //public void remove ()
 
-
+}
