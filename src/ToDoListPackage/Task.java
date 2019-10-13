@@ -1,9 +1,10 @@
 package ToDoListPackage;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
 
     // constructor : ask user to enter option
     public Task() {

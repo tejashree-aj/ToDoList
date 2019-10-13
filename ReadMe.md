@@ -8,7 +8,7 @@ The application will allow a user to create new tasks, assign them a title and d
 
 
 User Instructions
-
+a
 1. Clone the repository
 2. To run the project 
 

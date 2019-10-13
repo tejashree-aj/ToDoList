@@ -1,8 +1,14 @@
 package ToDoListPackage;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class TaskOperations {
@@ -98,16 +104,106 @@ public class TaskOperations {
         int taskId;
         taskId = taskScanner.nextInt();
 
-        taskList.stream().filter(x -> x.getTaskID() == taskId).findFirst().ifPresent(x -> {
-            taskList.remove(x);
-        });
-
+        removeTaskFromList(taskId);
 
         System.out.println("Task deleted successfully!");
 
         viewtasks();
     }
 
-    //public void remove ()
+    private void removeTaskFromList(int taskId) {
+        taskList.stream().filter(x -> x.getTaskID() == taskId).findFirst().ifPresent(x -> {
+            taskList.remove(x);
+        });
+
+    }
+    //method to edit task
+    public void editTask() {
+
+        viewtasks();
+        System.out.println("Enter task ID to edit task: ");
+        Scanner taskScanner = new Scanner(System.in);
+
+        Task tasktobeEdited = null;
+        while (tasktobeEdited == null) {
+            int selectedTaskId;
+            selectedTaskId = taskScanner.nextInt();
+            tasktobeEdited = taskList.stream().filter(x -> x.getTaskID() == selectedTaskId).findFirst().orElse(null);
+            if (tasktobeEdited == null)
+                System.out.println("Please enter valid Task ID to edit task: ");
+        }
+
+        System.out.println("Please select property to be edited: ");
+
+        System.out.println("1 - Change Project Name");
+        System.out.println("2 - Change Task Description");
+        System.out.println("3 - Change Task Due Date");
+        System.out.println("4 - Set Task Status as Completed");
+        int taskPropertyOption = taskScanner.nextInt();
+        taskScanner = new Scanner(System.in);
+        switch (taskPropertyOption) {
+
+            case 1:
+                System.out.println("Please enter project name: ");
+                String correctProjectName = null;
+                while (correctProjectName == null) {
+                    correctProjectName = taskScanner.nextLine();
+                    correctProjectName = validation.validateProjectName(correctProjectName);
+                }
+                tasktobeEdited.setProjectName(correctProjectName);
+                break;
+            case 2:
+                System.out.println("Please enter task description: ");
+                String correctTaskDescription = null;
+                while (correctTaskDescription == null) {
+                    correctTaskDescription = taskScanner.nextLine();
+                    correctTaskDescription = validation.validateTaskDescription(correctTaskDescription);
+                }
+                tasktobeEdited.settaskDescription(correctTaskDescription);
+                break;
+
+            case 3:
+                System.out.println("Please enter due date: ");
+                Date correctDueDate = null;
+                while (correctDueDate == null) {
+                    String dueDate = taskScanner.nextLine();
+                    correctDueDate = validation.parseDate(dueDate);
+                }
+                tasktobeEdited.setdueDate(correctDueDate);
+                break;
+
+            case 4:
+                System.out.println("Please enter if task completed Y/N: ");
+                String taskCompleted = taskScanner.nextLine();
+                if(taskCompleted.equalsIgnoreCase( "Y")){
+                    tasktobeEdited.settaskCompleted(true);
+                }
+                else if (taskCompleted.equalsIgnoreCase ("N")){
+                    tasktobeEdited.settaskCompleted(false);
+                }
+                break;
+        }
+
+        removeTaskFromList(tasktobeEdited.getTaskID());
+        taskList.add(tasktobeEdited);
+
+        System.out.println("Task updated successfully!");
+
+        viewtasks();
+    }
+
+    //method to save & quit
+
+   /* public void createFile ()
+    {
+        try {
+            FileOutputStream fos = new FileOutputStream("output");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(taskList); // write MenuArray to ObjectOutputStream
+            oos.close();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }*/
 
 }

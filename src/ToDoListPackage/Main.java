@@ -1,5 +1,6 @@
 package ToDoListPackage;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -26,7 +27,7 @@ public class Main {
             System.out.println("2 - Edit");
             System.out.println("3 - Delete");
             System.out.println("4 - View ");
-            System.out.println("0 - Save & Quit");
+            System.out.println("5 - Save & Quit");
 
             opChoice = in.nextInt();
 
@@ -38,7 +39,7 @@ public class Main {
                     break;
 
                 case 2:
-                    //  taskOperation.ed();
+                     taskOperation.editTask();
                     break;
 
                 case 3:
@@ -50,7 +51,7 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println("Save & Quit");
+                   // taskOperation.createFile();
                     in.close();
                     break;
             }
